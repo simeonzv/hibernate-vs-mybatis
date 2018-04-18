@@ -25,6 +25,10 @@ public class TransactionTokenMapper {
         }
     }
 
+    public void clearPersistenceContext() {
+        entityManager.clear();
+    }
+
     public void rollbackTransaction() {
         entityManager.getTransaction().rollback();
     }
@@ -35,6 +39,7 @@ public class TransactionTokenMapper {
 
     public void insert(TransactionToken record) {
         entityManager.persist(record);
+        entityManager.flush();
     }
 
     public long count() {
@@ -51,10 +56,12 @@ public class TransactionTokenMapper {
     }
 
     public void update(TransactionToken record) {
-        entityManager.merge(record);
+        entityManager.persist(record);
+        entityManager.flush();
     }
 
     public TransactionToken selectByTransaction(String transaction) {
         return (TransactionToken) entityManager.createQuery("select t from TransactionToken t where t.transaction = :trans_id").setParameter("trans_id", transaction).getSingleResult();
     }
+
 }

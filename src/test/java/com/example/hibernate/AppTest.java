@@ -115,6 +115,27 @@ public class AppTest {
 		assertEquals(count + 1, mapper.count());
 	}
 
+	@Test
+	public void testAddRemoveReferenceId() {
+		TransactionToken t = tokenFactory("omega", "passport");
+		mapper.insert(t);
+		mapper.clearPersistenceContext();
+		t = mapper.getById(t.getId());
+		assertEquals(0, t.getReferenceIds().size());
+		t.addReferenceId("referenceId1");
+		t.addReferenceId("referenceId2");
+		mapper.update(t);
+		mapper.clearPersistenceContext();
+		t = mapper.getById(t.getId());
+		assertEquals(2, t.getReferenceIds().size());
+		t.removeReferenceId("referenceId2");
+		mapper.update(t);
+		mapper.clearPersistenceContext();
+		t = mapper.getById(t.getId());
+		assertEquals(1, t.getReferenceIds().size());
+	}
+
+
 
 
 }

@@ -1,6 +1,8 @@
 package com.example.hibernate;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "trans_token")
 @Entity
@@ -10,6 +12,9 @@ public class TransactionToken {
     private long id = -1;
     private String transaction = "";
     private String token = "";
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> referenceIds = new ArrayList<>();
 
     public long getId() {
         return id;
@@ -34,4 +39,17 @@ public class TransactionToken {
     public void setToken(String token) {
         this.token = token;
     }
+
+    public void addReferenceId(String referenceId) {
+        referenceIds.add(referenceId);
+    }
+
+    public void removeReferenceId(String referenceId) {
+        referenceIds.remove(referenceId);
+    }
+
+    public List<String> getReferenceIds() {
+        return referenceIds;
+    }
+
 }
