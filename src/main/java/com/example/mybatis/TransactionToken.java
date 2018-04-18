@@ -1,13 +1,13 @@
 package com.example.mybatis;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionToken {
     private long id = -1;
     private String transaction = "";
     private String token = "";
-
-    List<String> referenceIds;
+    private List<String> referenceIds = new ArrayList<>();
 
     public long getId() {
         return id;
@@ -32,4 +32,17 @@ public class TransactionToken {
     public void setToken(String token) {
         this.token = token;
     }
+
+    public void addReferenceId(String referenceId) {
+        referenceIds.add(referenceId);
+    }
+
+    public void removeReferenceId(String referenceId) {
+        referenceIds.remove(referenceId);
+    }
+
+    public List<String> getReferenceIds() {
+        return referenceIds;
+    }
+
 }

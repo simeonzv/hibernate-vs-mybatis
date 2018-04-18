@@ -53,6 +53,7 @@ public class AppTest {
     @Test
     public void testInsert() {
         TransactionToken t = tokenFactory("alpha", "beta");
+        t.addReferenceId("r1");
         mapper.insert(t);
         assertTrue(t.getId() > -1);
 
@@ -133,4 +134,23 @@ public class AppTest {
         mapper.insert(t3);
         assertEquals(count + 1, mapper.count());
     }
+
+    @Test
+    public void testAddRemoveReferenceId() {
+        TransactionToken t = tokenFactory("omega", "passport");
+        mapper.insert(t);
+        t = mapper.getById(t.getId());
+        assertEquals(0, t.getReferenceIds().size());
+        t.addReferenceId("referenceId1");
+        t.addReferenceId("referenceId2");
+        mapper.insertReferenceIds(t);
+        t = mapper.getById(t.getId());
+        assertEquals(2, t.getReferenceIds().size());
+        t.removeReferenceId("referenceId2");
+        mapper.deleteAllReferenceIds(t);
+        mapper.insertReferenceIds(t);
+        t = mapper.getById(t.getId());
+        assertEquals(1, t.getReferenceIds().size());
+    }
+
 }
